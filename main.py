@@ -22,6 +22,7 @@ buttondown2 = pygame.image.load('endlevelbuttondown2.png')
 whiteimg = pygame.image.load('whitelight.png')
 pedestal = pygame.image.load('pedestal.png')
 book = pygame.image.load('book.png')
+bulletpicture = pygame.image.load('fireball.png')
 
 font = pygame.font.Font('freesansbold.ttf', 24)
 
@@ -45,6 +46,9 @@ endlevelbuttondown = False
 wait = True
 showwhite = False
 booktaken = False
+haspowers = False
+shot = pygame.mixer.Sound("shot.wav")
+
 
 def level1():
     #pygame.mixer.music.load("level1ambience.mp3")
@@ -379,7 +383,6 @@ def level11():
 
 
 def redrawgamewindow1():
-
     global walkcount
     global showbutton
     global button1edown
@@ -387,8 +390,7 @@ def redrawgamewindow1():
     global y
     global level
     print(x, y)
-    win.fill ((0,0,0))
-
+    win.fill ((50,0,0))
     if level == 1:
         level1()
     elif level == 2:
@@ -429,19 +431,37 @@ def redrawgamewindow1():
     else:
         win.blit(rightimg[walkcount//3], (x, y))
         walkcount += 1
+
+    for bullet in bullets:
+        win.blit(bulletpicture, pygame.Rect(bullet[0], bullet[1], 0, 0))
+
+
     pygame.display.update()
 
 
-
+bullets = []
 run = True
 while run:
     clock.tick(27)
+    mx, my = pygame.mouse.get_pos()
+
+    for b in range(len(bullets)):
+        bullets[b][0] -= 10
+
+    # Iterate over a slice copy if you want to mutate a list.
+    for bullet in bullets[:]:
+        if bullet[0] < 0:
+            bullets.remove(bullet)
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
+
+
     keys = pygame.key.get_pressed()
+
 
     if keys[pygame.K_LEFT] and x > vel:
         x -= vel
@@ -456,16 +476,9 @@ while run:
     if keys[pygame.K_DOWN]and y < screenwidth - height - vel:
         y += vel
 
+    if keys[pygame.K_SPACE]and haspowers:
+
     redrawgamewindow1()
 
-    class projectile(object):
-        def _init_(self, x , y, radius, colour, facing):
-            self.x = x
-            self.y = y
-            self.radius = radius
-            self.colour = colour
-            self.facing = facing
-        def draw(win):
-            pygame.draw.circle(win, self.colour, (self.x, self.y), self.radius)
 
 pygame.quit()
