@@ -26,9 +26,13 @@ showbutton = False
 button1edown = False
 
 def redrawgamewindow1():
+
     global walkcount
     global showbutton
     global button1edown
+    global x
+    global y
+    print(x, y)
     win.fill ((0,0,0))
     if showbutton:
         if button1edown:
@@ -52,7 +56,13 @@ def redrawgamewindow1():
         win.blit(rightimg[walkcount//3], (x, y))
         walkcount += 1
 
-    if x > 280:
+    if y > 369 and y < 415 and x > 225 and x < 275:
+        if keys[pygame.K_e] and button1edown == False:
+            pygame.mixer.music.load('button_sound.mp3')
+            pygame.mixer.music.play(0)
+            button1edown = True
+
+    if x > 200:
         showbutton = True
 
 
@@ -85,7 +95,14 @@ while run:
         y += vel
 
     redrawgamewindow1()
-
-
+    class projectile(object):
+        def _init_(self, x , y, radius, colour, facing):
+            self.x = x
+            self.y = y
+            self.radius = radius
+            self.colour = colour
+            self.facing = facing
+        def draw(win):
+            pygame.draw.circle(win, self.colour, (self.x, self.y), self.radius)
 
 pygame.quit()
