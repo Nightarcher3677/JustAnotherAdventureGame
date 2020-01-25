@@ -1,26 +1,33 @@
 import pygame
 import time
-pygame.init()
+pygame.init() #initialising pygame
 
 win = pygame.display.set_mode((500, 500))
 
 pygame.display.set_caption("JustAnotherAdventureGame")
 
-pygame.mixer.music.load('button_sound.mp3')
-pygame.mixer.music.load('testbeep.mp3')
+#loading spritesheets
 rightimg = [pygame.image.load('1.png'), pygame.image.load('2.png'), pygame.image.load('3.png'), pygame.image.load('4.png')]
 leftimg = [pygame.image.load('l1.png'), pygame.image.load('l2.png'), pygame.image.load('l3.png'), pygame.image.load('l4.png')]
+
+#loading buttons and stationary objects
 button1img = pygame.image.load('button1e.png')
 button2img = pygame.image.load('button2e.png')
-screenwidth = 500
 endlevelbutton1 = pygame.image.load('endlevelbutton1.png')
 endlevelbutton2 = pygame.image.load('endlevelbutton2.png')
 endlevebutton1 = pygame.image.load('endlevelbutton1left.png')
 endlevebutton2 = pygame.image.load('endlevelbutton2left.png')
+buttondown1 = pygame.image.load('endlevelbuttondown1.png')
+buttondown2 = pygame.image.load('endlevelbuttondown2.png')
 whiteimg = pygame.image.load('whitelight.png')
+pedestal = pygame.image.load('pedestal.png')
+book = pygame.image.load('book.png')
+
 font = pygame.font.Font('freesansbold.ttf', 24)
 
 clock = pygame.time.Clock()
+#variables
+screenwidth = 500
 x = 50
 y = 50
 width = 16
@@ -37,6 +44,7 @@ level = 1
 endlevelbuttondown = False
 wait = True
 showwhite = False
+booktaken = False
 
 def level1():
     #pygame.mixer.music.load("level1ambience.mp3")
@@ -84,7 +92,7 @@ def level1():
             pygame.mixer.music.play(0)
             button1edown = True
 
-    if y > 220 and y < 415 and x > 265 and x < 440:
+    if y > 215 and y < 265 and x > 395 and x < 445:
         if keys[pygame.K_e] and endlevelbuttondown == False:
             pygame.mixer.music.load('button_sound.mp3')
             pygame.mixer.music.play(0)
@@ -276,9 +284,96 @@ def level9():
     global showwhite
     win.fill ((0,0,0))
     win.fill ((0,0,0))
+    endlevelbuttondown = False
+    font = pygame.font.Font('freesansbold.ttf', 24)
+    text = font.render("Ugh. How long is this going to take?", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
+    win.blit(buttondown1, (250, 250))
+    if y > 240 and y < 290 and x > 240 and x < 300:
+        if keys[pygame.K_e] and endlevelbuttondown == False:
+            pygame.mixer.music.load('button_sound.mp3')
+            pygame.mixer.music.play(0)
+            endlevelbuttondown = True
+            level = 10
+            endlevelbuttondown = True
+            showbutton = False
+
+def level10():
+    global walkcount
+    global showbutton
+    global button1edown
+    global x
+    global y
+    global level
+    global wait
+    global endlevelbuttondown
+    global showwhite
+    global booktaken
+    global haspowers
+    keys = pygame.key.get_pressed()
+    win.fill ((0,0,0))
+    win.fill ((0,0,0))
+    font = pygame.font.Font('freesansbold.ttf', 24)
+    text = font.render("I guess we just... Press it?", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
+
+    if y > 100 and y < 150 and x > 230 and x < 280:
+        if keys[pygame.K_e] and endlevelbuttondown:
+            win.blit(buttondown1, (230, 100))
+            pygame.mixer.music.load('button_sound.mp3')
+            pygame.mixer.music.play(0)
+            endlevelbuttondown = False
+            showbutton = True
+        elif endlevelbuttondown == False:
+            win.blit(buttondown2, (230, 100))
+    if endlevelbuttondown:
+        win.blit(buttondown1, (230, 100))
+    elif endlevelbuttondown == False:
+        win.blit(buttondown2, (230, 100))
 
 
+    if showbutton:
+        if booktaken:
+            win.blit(pedestal, (250, 250))
+        else:
+            win.blit(pedestal, (250, 250))
+            win.blit(book, (250, 250))
 
+        if y > 200 and y < 300 and x > 200 and x < 300:
+            font = pygame.font.Font('freesansbold.ttf', 12)
+            text = font.render("press E to take the book", True, white, black)
+            textRect = text.get_rect()
+            textRect.center = (x - 15 ,y - 20)
+            win.blit(text, textRect)
+            if keys[pygame.K_e]:
+                pygame.mixer.music.load('take-blip.mp3')
+                pygame.mixer.music.play(0)
+                haspowers = True
+                level = 11
+
+def level11():
+    global walkcount
+    global showbutton
+    global button1edown
+    global x
+    global y
+    global level
+    global wait
+    global endlevelbuttondown
+    global showwhite
+    global booktaken
+    global haspowers
+    win.fill ((0,0,0))
+    win.fill ((0,0,0))
+    font = pygame.font.Font('freesansbold.ttf', 24)
+    text = font.render("You got magical powers! ", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
 
 
 
@@ -315,8 +410,16 @@ def redrawgamewindow1():
         level8()
     elif level == 9:
         level9()
+    elif level == 10:
+        booktaken = False
+        level10()
+    elif level == 11:
+        level11()
 
-    #pygame.draw.rect(win, (0, 255, 0), (x, y, width, height))
+
+
+
+        #pygame.draw.rect(win, (0, 255, 0), (x, y, width, height))
     if walkcount +1 >= 8:
         walkcount = 0
 
