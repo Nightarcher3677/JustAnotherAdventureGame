@@ -42,6 +42,7 @@ def redrawgamewindow1():
 
     font = pygame.font.Font('freesansbold.ttf', 32)
     if button1edown:
+        font = pygame.font.Font('freesansbold.ttf', 24)
         text = font.render('Huh. I guess E interacts with stuff', True, white, black)
     else:
         text = font.render('Hello?', True, white, black)
