@@ -207,6 +207,7 @@ def level6():
     global wait
     global endlevelbuttondown
     global showwhite
+    endlevelbuttondown = False
     showwhite = False
     win.fill ((0,0,0))
     win.fill ((0,0,0))
@@ -215,7 +216,67 @@ def level6():
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
-    
+    win.blit(endlevebutton1, (400, 250))
+    if y > 235 and y < 290 and x > 395 and x < 445:
+        if keys[pygame.K_e] and endlevelbuttondown == False:
+            pygame.mixer.music.load('button_sound.mp3')
+            pygame.mixer.music.play(0)
+            endlevelbuttondown = True
+            level = 7
+
+def level7():
+    global walkcount
+    global showbutton
+    global button1edown
+    global x
+    global y
+    global level
+    global wait
+    global endlevelbuttondown
+    global showwhite
+    win.fill ((0,0,0))
+    win.fill ((0,0,0))
+    level = 8
+
+def level8():
+    global walkcount
+    global showbutton
+    global button1edown
+    global x
+    global y
+    global level
+    global wait
+    global endlevelbuttondown
+    global showwhite
+    win.fill ((0,0,0))
+    win.fill ((0,0,0))
+    font = pygame.font.Font('freesansbold.ttf', 24)
+    text = font.render("Try up?", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
+    if level != 8:
+        showwhite = False
+    elif level == 8:
+        win.blit(whiteimg, (0, 0))
+    if y < 100:
+        level = 9
+        showwhite = False
+        level = 9
+
+def level9():
+    global walkcount
+    global showbutton
+    global button1edown
+    global x
+    global y
+    global level
+    global wait
+    global endlevelbuttondown
+    global showwhite
+    win.fill ((0,0,0))
+    win.fill ((0,0,0))
+
 
 
 
@@ -231,6 +292,7 @@ def redrawgamewindow1():
     global y
     global level
     print(x, y)
+    win.fill ((0,0,0))
 
     if level == 1:
         level1()
@@ -247,6 +309,12 @@ def redrawgamewindow1():
         level5()
     elif level == 6:
         level6()
+    elif level == 7:
+        level7()
+    elif level == 8:
+        level8()
+    elif level == 9:
+        level9()
 
     #pygame.draw.rect(win, (0, 255, 0), (x, y, width, height))
     if walkcount +1 >= 8:
@@ -286,6 +354,7 @@ while run:
         y += vel
 
     redrawgamewindow1()
+
     class projectile(object):
         def _init_(self, x , y, radius, colour, facing):
             self.x = x
