@@ -41,7 +41,12 @@ def redrawgamewindow1():
             win.blit(button1img, (230, 375))
 
     font = pygame.font.Font('freesansbold.ttf', 32)
-    text = font.render('Hello?', True, white, black)
+    if button1edown:
+        text = font.render('Huh. I guess E interacts with stuff', True, white, black)
+    else:
+        text = font.render('Hello?', True, white, black)
+
+
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
