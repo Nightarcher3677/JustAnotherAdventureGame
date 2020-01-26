@@ -384,6 +384,11 @@ def level11():
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
+    font = pygame.font.Font('freesansbold.ttf', 12)
+    text = font.render("press SPACE to attack!", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (x - 15 ,y - 20)
+    win.blit(text, textRect)
 
 
 
@@ -450,13 +455,14 @@ def redrawgamewindow1():
             if attackcount +1 >= 8:
                 attackcount = 0
         else:
-            win.blit(rightatkimg[attackcount//3], (x - 50, y - 30))
+            win.blit(rightatkimg[attackcount//3], (x + 15, y - 30))
             attackcount += 1
             if not attackcount == 4 or attackcount == 8:
-                win.blit(rightatkimg[attackcount//3], (x - 50, y - 30))
+                win.blit(rightatkimg[attackcount//3], (x + 15, y - 30))
                 attackcount += 1
             if attackcount +1 >= 8:
                 attackcount = 0
+
     else:
         attackcount = 0
 
