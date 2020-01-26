@@ -7,8 +7,13 @@ win = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("JustAnotherAdventureGame")
 
 #loading spritesheets
+    #player
 rightimg = [pygame.image.load('1.png'), pygame.image.load('2.png'), pygame.image.load('3.png'), pygame.image.load('4.png')]
 leftimg = [pygame.image.load('l1.png'), pygame.image.load('l2.png'), pygame.image.load('l3.png'), pygame.image.load('l4.png')]
+    #playerattacks
+rightatkimg = [pygame.image.load('atk1.png'), pygame.image.load('atk2.png'), pygame.image.load('atk3.png'), pygame.image.load('atk4.png')]
+leftatkimg = [pygame.image.load('latk1.png'), pygame.image.load('latk2.png'), pygame.image.load('latk3.png'), pygame.image.load('latk4.png')]
+
 
 #loading buttons and stationary objects
 button1img = pygame.image.load('button1e.png')
@@ -35,13 +40,14 @@ width = 16
 height = 16
 vel = 5
 walkcount = 0
+attackcount = 0
 left = False
 right = 0
 white = (255, 255, 255)
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 1
+level = 9
 endlevelbuttondown = False
 wait = True
 showwhite = False
@@ -384,6 +390,7 @@ def level11():
 
 def redrawgamewindow1():
     global walkcount
+    global attackcount
     global showbutton
     global button1edown
     global x
@@ -432,8 +439,26 @@ def redrawgamewindow1():
         win.blit(rightimg[walkcount//3], (x, y))
         walkcount += 1
 
-    for bullet in bullets:
-        win.blit(bulletpicture, pygame.Rect(bullet[0], bullet[1], 0, 0))
+
+    if keys[pygame.K_SPACE]and haspowers:
+        if left:
+            win.blit(leftatkimg[attackcount//3], (x - 50, y - 30))
+            attackcount += 1
+            if not attackcount == 4 or attackcount == 8:
+                win.blit(leftatkimg[attackcount//3], (x - 50, y - 30))
+                attackcount += 1
+            if attackcount +1 >= 8:
+                attackcount = 0
+        else:
+            win.blit(rightatkimg[attackcount//3], (x - 50, y - 30))
+            attackcount += 1
+            if not attackcount == 4 or attackcount == 8:
+                win.blit(rightatkimg[attackcount//3], (x - 50, y - 30))
+                attackcount += 1
+            if attackcount +1 >= 8:
+                attackcount = 0
+    else:
+        attackcount = 0
 
 
     pygame.display.update()
@@ -443,15 +468,7 @@ bullets = []
 run = True
 while run:
     clock.tick(27)
-    mx, my = pygame.mouse.get_pos()
 
-    for b in range(len(bullets)):
-        bullets[b][0] -= 10
-
-    # Iterate over a slice copy if you want to mutate a list.
-    for bullet in bullets[:]:
-        if bullet[0] < 0:
-            bullets.remove(bullet)
 
 
     for event in pygame.event.get():
@@ -476,7 +493,7 @@ while run:
     if keys[pygame.K_DOWN]and y < screenwidth - height - vel:
         y += vel
 
-    if keys[pygame.K_SPACE]and haspowers:
+
 
     redrawgamewindow1()
 
