@@ -1,5 +1,6 @@
 import pygame
 import time
+import random
 pygame.init() #initialising pygame
 
 win = pygame.display.set_mode((500, 500))
@@ -47,13 +48,36 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 9
+level = 1
 endlevelbuttondown = False
 wait = True
 showwhite = False
 booktaken = False
 haspowers = False
 shot = pygame.mixer.Sound("shot.wav")
+
+#classes
+
+class enemy(object):
+    #ex = random.randint(50, 450)
+    #ey = random.randint(50, 450)
+    walkright = [pygame.image.load('enemyr1.png'), pygame.image.load('enemyr2.png'), pygame.image.load('enemyr3.png'), pygame.image.load('enemyr4.png')]
+    #walkleft
+
+    def __init__(self, x, y, width, height, end):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.walkcount = 0
+        self.vel = 3
+
+        def draw(self, win):
+            pass
+
+        def move(self):
+            pass
+
 
 
 def level1():
