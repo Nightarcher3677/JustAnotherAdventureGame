@@ -1,6 +1,7 @@
 import pygame
 import time
 import random
+pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init() #initialising pygame
 
 win = pygame.display.set_mode((500, 500))
@@ -14,7 +15,9 @@ leftimg = [pygame.image.load('l1.png'), pygame.image.load('l2.png'), pygame.imag
     #playerattacks
 rightatkimg = [pygame.image.load('atk1.png'), pygame.image.load('atk2.png'), pygame.image.load('atk3.png'), pygame.image.load('atk4.png')]
 leftatkimg = [pygame.image.load('latk1.png'), pygame.image.load('latk2.png'), pygame.image.load('latk3.png'), pygame.image.load('latk4.png')]
-
+    #enemy1
+enemy1l = [pygame.image.load('enemyl1.png'), pygame.image.load('enemyl2.png'), pygame.image.load('enemyl3.png'), pygame.image.load('enemyl4.png')]
+enemy1r = [pygame.image.load('enemyr1.png'), pygame.image.load('enemyr2.png'), pygame.image.load('enemyr3.png'), pygame.image.load('enemyr4.png')]
 
 #loading buttons and stationary objects
 button1img = pygame.image.load('button1e.png')
@@ -34,6 +37,8 @@ font = pygame.font.Font('freesansbold.ttf', 24)
 
 clock = pygame.time.Clock()
 #variables
+ex = random.randint(50, 450)
+ey = random.randint(50, 450)
 screenwidth = 500
 x = 50
 y = 50
@@ -42,6 +47,7 @@ height = 16
 vel = 5
 walkcount = 0
 attackcount = 0
+enemycycle = 0
 left = False
 right = 0
 white = (255, 255, 255)
@@ -58,25 +64,56 @@ shot = pygame.mixer.Sound("shot.wav")
 
 #classes
 
-class enemy(object):
-    #ex = random.randint(50, 450)
-    #ey = random.randint(50, 450)
-    walkright = [pygame.image.load('enemyr1.png'), pygame.image.load('enemyr2.png'), pygame.image.load('enemyr3.png'), pygame.image.load('enemyr4.png')]
-    #walkleft
+class enemy():
+    ex = random.randint(50, 450)
+    ey = random.randint(50, 450)
+    facing = 0
+    def moveenemy():
+        global facing
+        global x
+        global y
+        global ex
+        global ey
+        #positioning x
+        if ex > x:
+            facing = -1
+            if not ex - 15 < x and ( ey -15 < y or ey + 45 > y ):
+                ex -= 2.5
+        else:
+            facing = 1
+            if not ex + 45 > x and ( ey -15 < y or ey + 45 > y ):
+                ex += 2.5
 
-    def __init__(self, x, y, width, height, end):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.walkcount = 0
-        self.vel = 3
+        #positioning y
+        if ey > y:
 
-        def draw(self, win):
-            pass
+            if not ey - 15 < y and ( ex -15 < x or ex + 45 > x ):
+                ey -= 2.5
+        else:
 
-        def move(self):
-            pass
+            if not ey + 45 > y and ( ex -15 < x or ex + 45 > x ):
+                ey += 2.5
+
+
+
+    def drawenemy():
+        global facing
+        global x
+        global y
+        global ex
+        global ey
+        global enemycycle
+        if enemycycle +1 >= 8:
+            enemycycle = 0
+
+        if facing == -1:
+            win.blit(enemy1l[enemycycle//3], (ex, ey))
+            enemycycle += 1
+        else:
+            win.blit(enemy1r[enemycycle//3], (ex, ey))
+            enemycycle += 1
+
+
 
 
 
@@ -413,7 +450,8 @@ def level11():
     textRect = text.get_rect()
     textRect.center = (x - 15 ,y - 20)
     win.blit(text, textRect)
-
+    enemy.moveenemy()
+    enemy.drawenemy()
 
 
 
@@ -476,6 +514,9 @@ def redrawgamewindow1():
             if not attackcount == 4 or attackcount == 8:
                 win.blit(leftatkimg[attackcount//3], (x - 50, y - 30))
                 attackcount += 1
+            if attackcount == 4 or attackcount == 8:
+                pygame.mixer.music.load('atksound1.mp3')
+                pygame.mixer.music.play(0)
             if attackcount +1 >= 8:
                 attackcount = 0
         else:
@@ -484,6 +525,9 @@ def redrawgamewindow1():
             if not attackcount == 4 or attackcount == 8:
                 win.blit(rightatkimg[attackcount//3], (x + 15, y - 30))
                 attackcount += 1
+            if attackcount == 4 or attackcount == 8:
+                pygame.mixer.music.load('atksound1.mp3')
+                pygame.mixer.music.play(0)
             if attackcount +1 >= 8:
                 attackcount = 0
 
