@@ -31,23 +31,30 @@ buttondown2 = pygame.image.load('endlevelbuttondown2.png')
 whiteimg = pygame.image.load('whitelight.png')
 pedestal = pygame.image.load('pedestal.png')
 book = pygame.image.load('book.png')
-bulletpicture = pygame.image.load('fireball.png')
+fireballimg = [pygame.image.load('atk (1).png'), pygame.image.load('atk (2).png'), pygame.image.load('atk (3).png'), pygame.image.load('atk (4).png'), pygame.image.load('atk (5).png'), pygame.image.load('atk (6).png'), pygame.image.load('atk (7).png'), pygame.image.load('atk (8).png'), pygame.image.load('atk (9).png'), pygame.image.load('atk (10).png'), pygame.image.load('atk (11).png'), pygame.image.load('atk (12).png'), pygame.image.load('atk (13).png'), pygame.image.load('atk (14).png'),  pygame.image.load('atk (15).png')]
+attack = False
 
 font = pygame.font.Font('freesansbold.ttf', 24)
 
 clock = pygame.time.Clock()
 #variables
+savefx = 50
+savefy = 50
+fx = 0
+fy = 0
+usedpowers = False
 ex = random.randint(50, 450)
 ey = random.randint(50, 450)
 screenwidth = 500
-x = 50
-y = 50
+x = 50.0
+y = 50.0
 width = 16
 height = 16
 vel = 5
 walkcount = 0
 attackcount = 0
 enemycycle = 0
+attackcycle = 0
 left = False
 right = 0
 white = (255, 255, 255)
@@ -55,18 +62,22 @@ black = (0, 0, 0)
 showbutton = False
 button1edown = False
 level = 1
+eVel = 2
 endlevelbuttondown = False
 wait = True
 showwhite = False
 booktaken = False
 haspowers = False
+first = False
 shot = pygame.mixer.Sound("shot.wav")
+active = False
 
 #classes
 
 class enemy():
     ex = random.randint(50, 450)
     ey = random.randint(50, 450)
+    eVel = 2
     facing = 0
     def moveenemy():
         global facing
@@ -74,25 +85,26 @@ class enemy():
         global y
         global ex
         global ey
+        global eVel
         #positioning x
         if ex > x:
             facing = -1
-            if not ex - 15 < x and ( ey -15 < y or ey + 45 > y ):
-                ex -= 2.5
+            if not ex - 15 < x and ( ey -15 < y or ey + 20 > y ):
+                ex -= eVel
         else:
             facing = 1
-            if not ex + 45 > x and ( ey -15 < y or ey + 45 > y ):
-                ex += 2.5
+            if not ex + 30 > x and ( ey -15 < y or ey + 20 > y ):
+                ex += eVel
 
         #positioning y
         if ey > y:
 
             if not ey - 15 < y and ( ex -15 < x or ex + 45 > x ):
-                ey -= 2.5
+                ey -= eVel
         else:
 
             if not ey + 45 > y and ( ex -15 < x or ex + 45 > x ):
-                ey += 2.5
+                ey += eVel
 
 
 
@@ -114,7 +126,65 @@ class enemy():
             enemycycle += 1
 
 
+def fireball(check, fx, fy, dx, dy, fVel):
+    global ex
+    global ey
+    global x
+    global y
+    global savefx
+    global savefy
+    global first
+    global attackcycle
+    global active
+    global first
+    if check == 'self':
+        fx = savefx
+        fy = savefy
+    if fx > dx:
+        fx -= fVel
+        if fx < dx:
+            fx += fVel
+    else:
+        if fx < dx:
+            fx += fVel
+            if fx < dx:
+                fx += fVel
 
+    #positioning y
+    if fy > dy:
+        fy -= fVel
+        if fy > dy:
+            fy -= fVel
+    else:
+        if fy > dy:
+            fy -= fVel
+            if fy > dy:
+                fy -= fVel
+    if active:
+        win.blit(fireballimg[attackcycle//2], (fx, fy))
+        if first:
+            if fx == ex and fy == ey:
+                #active == False
+                #first == False
+                print("damaged")
+    if ex == fx and (fy == ey or ey - 1 == fy or ey + 1 == fy ) or (fy == ey or ey - 2 == fy or ey + 2 == fy ):
+        if ey == fy and (fx == ex or ex - 1 == fx or ex + 1 == fx ) or (fx == ex or ex - 2 == fx or ex + 2 == fx ):
+            print('damaged')
+            level = 12
+            fx = x
+            fy = y
+            active = False
+            first = False
+    else:
+        win.blit(fireballimg[attackcycle//2], (fx, fy))
+
+
+    attackcycle += 1
+    if attackcycle +1 >= 15:
+        attackcycle = 0
+    savefx = fx
+    savefy = fy
+    first = True
 
 
 def level1():
@@ -137,7 +207,6 @@ def level1():
 
                 wait = True
                 if wait:
-                    time.sleep(0.5)
                     level = 2
             else:
                 win.blit(endlevelbutton1, (400, 230))
@@ -445,11 +514,18 @@ def level11():
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
-    font = pygame.font.Font('freesansbold.ttf', 12)
-    text = font.render("press SPACE to attack!", True, white, black)
-    textRect = text.get_rect()
-    textRect.center = (x - 15 ,y - 20)
-    win.blit(text, textRect)
+    if usedpowers:
+        font = pygame.font.Font('freesansbold.ttf', 12)
+        text = font.render("Demons can only be damaged from their underside", True, white, black)
+        textRect = text.get_rect()
+        textRect.center = (x - 10 ,y - 20)
+        win.blit(text, textRect)
+    else:
+        font = pygame.font.Font('freesansbold.ttf', 12)
+        text = font.render("press SPACE to attack!", True, white, black)
+        textRect = text.get_rect()
+        textRect.center = (x - 10 ,y - 20)
+        win.blit(text, textRect)
     enemy.moveenemy()
     enemy.drawenemy()
 
@@ -463,6 +539,13 @@ def redrawgamewindow1():
     global x
     global y
     global level
+    global ey
+    global facing
+    global attack
+    global fx
+    global fy
+    global first
+    global usedpowers
     print(x, y)
     win.fill ((50,0,0))
     if level == 1:
@@ -490,6 +573,7 @@ def redrawgamewindow1():
         booktaken = False
         level10()
     elif level == 11:
+        haspowers = True
         level11()
 
 
@@ -508,7 +592,24 @@ def redrawgamewindow1():
 
 
     if keys[pygame.K_SPACE]and haspowers:
+        usedpowers = True
+        fireball('not self' , x, y, ex, ey, 2)
+        first = True
+        attack = True
+        active = True
+
+    if attack and first:
+        active = True
+        fireball('self', x, y, ex, ey, 2)
+
+    pygame.display.update()
+'''
+    if keys[pygame.K_SPACE]and haspowers:
+
         if left:
+            if facing == -1:
+                if True:#ex > x + 500 and ex < x - 10 : #and ey > y + 90 and ey < y + 65:
+                    print('damaged')
             win.blit(leftatkimg[attackcount//3], (x - 50, y - 30))
             attackcount += 1
             if not attackcount == 4 or attackcount == 8:
@@ -517,9 +618,13 @@ def redrawgamewindow1():
             if attackcount == 4 or attackcount == 8:
                 pygame.mixer.music.load('atksound1.mp3')
                 pygame.mixer.music.play(0)
+
             if attackcount +1 >= 8:
                 attackcount = 0
         else:
+            if facing == 1:
+                if int(ex) > (x - 1) and int(ex) < (x + 100) : #and ey > y + 90 and ey < y + 65:
+                    print('damaged')
             win.blit(rightatkimg[attackcount//3], (x + 15, y - 30))
             attackcount += 1
             if not attackcount == 4 or attackcount == 8:
@@ -533,9 +638,9 @@ def redrawgamewindow1():
 
     else:
         attackcount = 0
+'''
 
-
-    pygame.display.update()
+    #pygame.display.update()
 
 
 bullets = []
