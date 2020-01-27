@@ -46,8 +46,8 @@ usedpowers = False
 ex = random.randint(50, 450)
 ey = random.randint(50, 450)
 screenwidth = 500
-x = 50.0
-y = 50.0
+x = 115.0
+y = 230.0
 width = 16
 height = 16
 vel = 5
@@ -169,10 +169,11 @@ class atk:
                             ex += 50
 
 def endofgame():
+    font = pygame.font.Font('freesansbold.ttf', 16)
     text = font.render("Thanks for playing! We're working on more levels at this very moment!", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
-    font = pygame.font.Font('freesansbold.ttf', 32)
+
 
 
 def level1():
@@ -212,6 +213,18 @@ def level1():
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
+    font = pygame.font.Font('freesansbold.ttf', 12)
+    if showbutton:
+        text = font.render("Press 'E' to interact with objects", True, white, black)
+        textRect = text.get_rect()
+        textRect.center = (x, y - 5)
+        win.blit(text, textRect)
+    else:
+        text = font.render("Use the arrow keys to move", True, white, black)
+        textRect = text.get_rect()
+        textRect.center = (x, y - 5)
+        win.blit(text, textRect)
+
 
 
     if y > 369 and y < 415 and x > 225 and x < 275:
@@ -475,7 +488,7 @@ def level10():
             font = pygame.font.Font('freesansbold.ttf', 12)
             text = font.render("press E to take the book", True, white, black)
             textRect = text.get_rect()
-            textRect.center = (x - 15 ,y - 20)
+            textRect.center = (x ,y - 10)
             win.blit(text, textRect)
             if keys[pygame.K_e]:
                 pygame.mixer.music.load('take-blip.mp3')
