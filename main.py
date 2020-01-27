@@ -64,7 +64,7 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 1
+level = 9
 eVel = 2
 endlevelbuttondown = False
 wait = True
@@ -129,81 +129,24 @@ class enemy():
             enemycycle += 1
 
 
-def fireball(check, fx, fy, dx, dy, fVel):
-    global ex
-    global ey
-    global x
-    global y
-    global savefx
-    global savefy
-    global first
-    global attackcycle
-    global active
-    global first
-    global level
-    global count
-    global stop
-    if check == 'self':
-        fx = savefx
-        fy = savefy
-    if fx > dx:
-        fx -= fVel
-        if fx < dx:
-            fx += fVel
-    else:
-        if fx < dx:
-            fx += fVel
-            if fx < dx:
-                fx += fVel
-
-    #positioning y
-    if fy > dy:
-        fy -= fVel
-        if fy > dy:
-            fy -= fVel
-    else:
-        if fy > dy:
-            fy -= fVel
-            if fy > dy:
-                fy -= fVel
-    if active:
-        if count > (27 * 2):
-            active = False
-            first = False
-            attack = False
-            fx = x
-            fy = y
-
-        win.blit(fireballimg[attackcycle//2], (fx, fy))
-        count += 1
-        if first:
-            if fx == ex and fy == ey:
-                #active == False
-                #first == False
-                print("damaged")
-    if ex == fx and (fy == ey or ey - 1 == fy or ey + 1 == fy ) or (fy == ey or ey - 2 == fy or ey + 2 == fy ):
-        if ey == fy and (fx == ex or ex - 1 == fx or ex + 1 == fx ) or (fx == ex or ex - 2 == fx or ex + 2 == fx ):
-            print('damaged')
-            active = False
-            first = False
-            attack = False
-            if level == 11:
-                level = 12
-            fx = x
-            fy = y
-            stop = True
+class atk:
+    def melee(damage, x, y, ex, ey, width, attack):
+        global facing
+        center_ex = 30 / 2 + ex
+        center_ey = 30 / 2 + ey
+        center_x = 15 / 2 + x
+        center_y = 15 / 2 + y
+        if attack:
+            if facing == -1:
+                if center_ex < center_x and center_ex > center_x - 50:
+                        if center_ey < center_y + 15 and center_ey > center_y - 15:
+                            print('damaged | ', damage)
+            elif facing == 1:
+                if center_ex > center_x and center_ex < center_x + 50:
+                        if center_ey < center_y + 15 and center_ey > center_y - 15:
+                            print('damaged | ', damage)
 
 
-    else:
-        win.blit(fireballimg[attackcycle//2], (fx, fy))
-
-
-    attackcycle += 1
-    if attackcycle +1 >= 15:
-        attackcycle = 0
-    savefx = fx
-    savefy = fy
-    first = True
 
 
 def level1():
@@ -635,22 +578,38 @@ def redrawgamewindow1():
     if left:
         win.blit(leftimg[walkcount//3], (x, y))
         walkcount += 1
+        facing = -1
     else:
         win.blit(rightimg[walkcount//3], (x, y))
         walkcount += 1
+        facing = 1
 
 
     if keys[pygame.K_SPACE]and haspowers:
-        usedpowers = True
-        fireball('not self' , x, y, ex, ey, 2)
-        first = True
-        attack = True
-        active = True
+        atk.melee(5, x, y, ex, ey, 15, True)
+        if attackcount +1 >= 8:
+            attackcount = 0
+        if facing == -1:
+            win.blit(leftatkimg[attackcount//3], (x - 50, y - 30))
+            attackcount += 1
+            if not attackcount == 4 or attackcount == 8:
+                win.blit(leftatkimg[attackcount//3], (x - 50, y - 30))
+                attackcount += 1
+            if attackcount == 4 or attackcount == 8:
+                pygame.mixer.music.load('atksound1.mp3')
+                pygame.mixer.music.play(0)
+        else:
+            win.blit(rightatkimg[attackcount//3], (x + 15, y - 30))
+            attackcount += 1
+            if not attackcount == 4 or attackcount == 8:
+                win.blit(rightatkimg[attackcount//3], (x + 15, y - 30))
+                attackcount += 1
+            if attackcount == 4 or attackcount == 8:
+                pygame.mixer.music.load('atksound1.mp3')
+                pygame.mixer.music.play(0)
 
-    if attack and first:
-        active = True
-        if not stop:
-            fireball('self', x, y, ex, ey, 2)
+    else:
+        atk.melee(5, x, y, ex, ey, 15, False)
 
     pygame.display.update()
 '''
