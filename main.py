@@ -32,7 +32,7 @@ whiteimg = pygame.image.load('whitelight.png')
 pedestal = pygame.image.load('pedestal.png')
 book = pygame.image.load('book.png')
 fireballimg = [pygame.image.load('atk (1).png'), pygame.image.load('atk (2).png'), pygame.image.load('atk (3).png'), pygame.image.load('atk (4).png'), pygame.image.load('atk (5).png'), pygame.image.load('atk (6).png'), pygame.image.load('atk (7).png'), pygame.image.load('atk (8).png'), pygame.image.load('atk (9).png'), pygame.image.load('atk (10).png'), pygame.image.load('atk (11).png'), pygame.image.load('atk (12).png'), pygame.image.load('atk (13).png'), pygame.image.load('atk (14).png'),  pygame.image.load('atk (15).png')]
-attack = False
+bg = pygame.image.load('floor_10.png')
 
 font = pygame.font.Font('freesansbold.ttf', 24)
 
@@ -46,6 +46,7 @@ usedpowers = False
 ex = random.randint(50, 450)
 ey = random.randint(50, 450)
 screenwidth = 500
+attack = False
 x = 115.0
 y = 230.0
 width = 16
@@ -558,6 +559,9 @@ def level12():
             endlevelbuttondown = True
             level = 13
 
+def level13():
+    win.blit(bg, (0, 0))
+
 
 def redrawgamewindow1():
     global walkcount
@@ -606,6 +610,8 @@ def redrawgamewindow1():
         level11()
     elif level == 12:
         level12()
+    elif level == 13:
+        level13()
 
 
 #
