@@ -54,8 +54,11 @@ vel = 5
 walkcount = 0
 attackcount = 0
 enemycycle = 0
+haspowers = False
+count = 0
 attackcycle = 0
 left = False
+stop = True
 right = 0
 white = (255, 255, 255)
 black = (0, 0, 0)
@@ -137,6 +140,9 @@ def fireball(check, fx, fy, dx, dy, fVel):
     global attackcycle
     global active
     global first
+    global level
+    global count
+    global stop
     if check == 'self':
         fx = savefx
         fy = savefy
@@ -161,7 +167,15 @@ def fireball(check, fx, fy, dx, dy, fVel):
             if fy > dy:
                 fy -= fVel
     if active:
+        if count > (27 * 2):
+            active = False
+            first = False
+            attack = False
+            fx = x
+            fy = y
+
         win.blit(fireballimg[attackcycle//2], (fx, fy))
+        count += 1
         if first:
             if fx == ex and fy == ey:
                 #active == False
@@ -170,11 +184,16 @@ def fireball(check, fx, fy, dx, dy, fVel):
     if ex == fx and (fy == ey or ey - 1 == fy or ey + 1 == fy ) or (fy == ey or ey - 2 == fy or ey + 2 == fy ):
         if ey == fy and (fx == ex or ex - 1 == fx or ex + 1 == fx ) or (fx == ex or ex - 2 == fx or ex + 2 == fx ):
             print('damaged')
-            level = 12
-            fx = x
-            fy = y
             active = False
             first = False
+            attack = False
+            if level == 11:
+                level = 12
+            fx = x
+            fy = y
+            stop = True
+
+
     else:
         win.blit(fireballimg[attackcycle//2], (fx, fy))
 
@@ -530,6 +549,33 @@ def level11():
     enemy.drawenemy()
 
 
+def level12():
+    global walkcount
+    global showbutton
+    global button1edown
+    global x
+    global y
+    global level
+    global wait
+    global endlevelbuttondown
+    global showwhite
+    global booktaken
+    global haspowers
+    win.fill ((0,0,0))
+    win.fill ((0,0,0))
+    font = pygame.font.Font('freesansbold.ttf', 16)
+    text = font.render("I think you're ready. Press the button to enter The Game", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
+    win.blit(endlevelbutton1, (100, 100))
+    if y > 90 and y < 140 and x > 90 and x < 140:
+        if keys[pygame.K_e] and endlevelbuttondown == False:
+            pygame.mixer.music.load('button_sound.mp3')
+            pygame.mixer.music.play(0)
+            endlevelbuttondown = True
+            level = 13
+
 
 def redrawgamewindow1():
     global walkcount
@@ -546,8 +592,9 @@ def redrawgamewindow1():
     global fy
     global first
     global usedpowers
+    global haspowers
     print(x, y)
-    win.fill ((50,0,0))
+    win.fill ((0,0,0))
     if level == 1:
         level1()
     elif level == 2:
@@ -575,6 +622,8 @@ def redrawgamewindow1():
     elif level == 11:
         haspowers = True
         level11()
+    elif level == 12:
+        level12()
 
 
 
@@ -600,7 +649,8 @@ def redrawgamewindow1():
 
     if attack and first:
         active = True
-        fireball('self', x, y, ex, ey, 2)
+        if not stop:
+            fireball('self', x, y, ex, ey, 2)
 
     pygame.display.update()
 '''
