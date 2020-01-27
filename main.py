@@ -65,6 +65,7 @@ black = (0, 0, 0)
 showbutton = False
 button1edown = False
 level = 9
+enemyhealth = 15
 eVel = 2
 endlevelbuttondown = False
 wait = True
@@ -80,7 +81,7 @@ active = False
 class enemy():
     ex = random.randint(50, 450)
     ey = random.randint(50, 450)
-    eVel = 2
+    eVel = 1
     facing = 0
     def moveenemy():
         global facing
@@ -130,21 +131,33 @@ class enemy():
 
 
 class atk:
-    def melee(damage, x, y, ex, ey, width, attack):
+    def melee(damage, x, y, ex_, ey_, width, attack, offset):
         global facing
-        center_ex = 30 / 2 + ex
-        center_ey = 30 / 2 + ey
+        global enemyhealth
+        global ex
+        global ey
+        center_ex = 30 / 2 + ex_
+        center_ey = 30 / 2 + ey_
         center_x = 15 / 2 + x
         center_y = 15 / 2 + y
+        damage = random.randint(damage - offset, damage + offset)
         if attack:
             if facing == -1:
                 if center_ex < center_x and center_ex > center_x - 50:
                         if center_ey < center_y + 15 and center_ey > center_y - 15:
                             print('damaged | ', damage)
+                            enemyhealth -= damage
+                            pygame.mixer.music.load('hit.wav')
+                            pygame.mixer.music.play(0)
+                            ex -= 50
             elif facing == 1:
                 if center_ex > center_x and center_ex < center_x + 50:
                         if center_ey < center_y + 15 and center_ey > center_y - 15:
                             print('damaged | ', damage)
+                            enemyhealth -= damage
+                            pygame.mixer.music.load('hit.wav')
+                            pygame.mixer.music.play(0)
+                            ex += 50
 
 
 
@@ -586,7 +599,7 @@ def redrawgamewindow1():
 
 
     if keys[pygame.K_SPACE]and haspowers:
-        atk.melee(5, x, y, ex, ey, 15, True)
+        atk.melee(5, x, y, ex, ey, 15, True, 2)
         if attackcount +1 >= 8:
             attackcount = 0
         if facing == -1:
@@ -609,7 +622,7 @@ def redrawgamewindow1():
                 pygame.mixer.music.play(0)
 
     else:
-        atk.melee(5, x, y, ex, ey, 15, False)
+        atk.melee(5, x, y, ex, ey, 15, False, 2)
 
     pygame.display.update()
 '''
