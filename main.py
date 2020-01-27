@@ -90,25 +90,30 @@ class enemy():
         global ex
         global ey
         global eVel
+        global level
+        global enemyhealth
         #positioning x
-        if ex > x:
-            facing = -1
-            if not ex - 15 < x and ( ey -15 < y or ey + 20 > y ):
-                ex -= eVel
+        if enemyhealth < 1 and level == 11:
+            level = 12
         else:
-            facing = 1
-            if not ex + 30 > x and ( ey -15 < y or ey + 20 > y ):
-                ex += eVel
+            if ex > x:
+                facing = -1
+                if not ex - 15 < x and ( ey -15 < y or ey + 20 > y ):
+                    ex -= eVel
+            else:
+                facing = 1
+                if not ex + 30 > x and ( ey -15 < y or ey + 20 > y ):
+                    ex += eVel
 
-        #positioning y
-        if ey > y:
+            #positioning y
+            if ey > y:
 
-            if not ey - 15 < y and ( ex -15 < x or ex + 45 > x ):
-                ey -= eVel
-        else:
+                if not ey - 15 < y and ( ex -15 < x or ex + 45 > x ):
+                    ey -= eVel
+            else:
 
-            if not ey + 45 > y and ( ex -15 < x or ex + 45 > x ):
-                ey += eVel
+                if not ey + 45 > y and ( ex -15 < x or ex + 45 > x ):
+                    ey += eVel
 
 
 
@@ -149,12 +154,16 @@ class atk:
                             enemyhealth -= damage
                             pygame.mixer.music.load('hit.wav')
                             pygame.mixer.music.play(0)
+                            pygame.mixer.music.load('hit.wav')
+                            pygame.mixer.music.play(0)
                             ex -= 50
             elif facing == 1:
                 if center_ex > center_x and center_ex < center_x + 50:
                         if center_ey < center_y + 15 and center_ey > center_y - 15:
                             print('damaged | ', damage)
                             enemyhealth -= damage
+                            pygame.mixer.music.load('hit.wav')
+                            pygame.mixer.music.play(0)
                             pygame.mixer.music.load('hit.wav')
                             pygame.mixer.music.play(0)
                             ex += 50
