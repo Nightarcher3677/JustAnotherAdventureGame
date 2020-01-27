@@ -64,7 +64,7 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 9
+level = 1
 enemyhealth = 15
 eVel = 2
 endlevelbuttondown = False
@@ -168,7 +168,11 @@ class atk:
                             pygame.mixer.music.play(0)
                             ex += 50
 
-
+def endofgame():
+    text = font.render("Thanks for playing! We're working on more levels at this very moment!", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    font = pygame.font.Font('freesansbold.ttf', 32)
 
 
 def level1():
@@ -591,7 +595,7 @@ def redrawgamewindow1():
         level12()
 
 
-
+#
 
         #pygame.draw.rect(win, (0, 255, 0), (x, y, width, height))
     if walkcount +1 >= 8:
@@ -676,6 +680,7 @@ def redrawgamewindow1():
 
 bullets = []
 run = True
+frame = 0
 while run:
     clock.tick(27)
 
