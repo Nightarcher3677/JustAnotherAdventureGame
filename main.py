@@ -80,7 +80,7 @@ hp = 18
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 13
+level = 1
 enemyhealth = 15
 eVel = 2
 endlevelbuttondown = False
@@ -218,9 +218,9 @@ def level1():
         else:
             win.blit(button1img, (230, 375))
 
-    font = pygame.font.Font('freesansbold.ttf', 32)
+    font = pygame.font.Font('munro\munro.ttf', 32)
     if button1edown:
-        font = pygame.font.Font('freesansbold.ttf', 24)
+        font = pygame.font.Font('munro\munro.ttf', 24)
         text = font.render('Huh. I guess E interacts with stuff', True, white, black)
     else:
         text = font.render('Hello?', True, white, black)
@@ -229,7 +229,7 @@ def level1():
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
-    font = pygame.font.Font('freesansbold.ttf', 12)
+    font = pygame.font.Font('munro\munro.ttf', 12)
     if showbutton:
         text = font.render("Press 'E' to interact with objects", True, white, black)
         textRect = text.get_rect()
@@ -272,24 +272,25 @@ def level2():
     global endlevelbuttondown
     global showwhite
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 24)
+    if x < 250 and level == 2:
+        showwhite = True
+    elif level != 2:
+        showwhite = False
+    if showwhite and level == 2:
+        win.blit(whiteimg, (-170, 0))
+    if x < 100:
+        level = 3
+        showwhite = False
+    font = pygame.font.Font('munro\munro.ttf', 24)
     if showwhite:
-        text = font.render("Um. Okay...", True, white, black)
+        text = font.render("Um. Okay...", True, white)
     else:
         text = font.render("That's new", True, white, black)
 
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
-    if x < 250 and level == 2:
-        showwhite = True
-    elif level != 2:
-        showwhite = False
-    if showwhite and level == 2:
-        win.blit(whiteimg, (0, 0))
-    if x < 100:
-        level = 3
-        showwhite = False
+
 
 def level3():
     global walkcount
@@ -317,7 +318,7 @@ def level4():
     global showwhite
     endlevelbuttondown = False
     showwhite = False
-    font = pygame.font.Font('freesansbold.ttf', 24)
+    font = pygame.font.Font('munro\munro.ttf', 24)
     text = font.render("Can't be that then.", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
@@ -348,11 +349,6 @@ def level5():
     showwhite = False
     win.fill ((0,0,0))
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 24)
-    text = font.render("Maybe the other direction...?", True, white, black)
-    textRect = text.get_rect()
-    textRect.center = (500 // 2, 75)
-    win.blit(text, textRect)
     if level != 5:
         showwhite = False
     elif level == 5:
@@ -361,6 +357,12 @@ def level5():
         level = 6
         showwhite = False
         level = 6
+    font = pygame.font.Font('munro\munro.ttf', 24)
+    text = font.render("Maybe the other direction...?", True, (50, 50, 50))
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
+
 
 def level6():
     global walkcount
@@ -376,7 +378,7 @@ def level6():
     showwhite = False
     win.fill ((0,0,0))
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 24)
+    font = pygame.font.Font('munro\munro.ttf', 24)
     text = font.render("Nope!", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
@@ -415,11 +417,6 @@ def level8():
     global showwhite
     win.fill ((0,0,0))
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 24)
-    text = font.render("Try up?", True, white, black)
-    textRect = text.get_rect()
-    textRect.center = (500 // 2, 75)
-    win.blit(text, textRect)
     if level != 8:
         showwhite = False
     elif level == 8:
@@ -428,6 +425,12 @@ def level8():
         level = 9
         showwhite = False
         level = 9
+    font = pygame.font.Font('munro\munro.ttf', 24)
+    text = font.render("Try up?", True, (50, 50, 50))
+    textRect = text.get_rect()
+    textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
+
 
 def level9():
     global walkcount
@@ -442,7 +445,7 @@ def level9():
     win.fill ((0,0,0))
     win.fill ((0,0,0))
     endlevelbuttondown = False
-    font = pygame.font.Font('freesansbold.ttf', 24)
+    font = pygame.font.Font('munro\munro.ttf', 24)
     text = font.render("Ugh. How long is this going to take?", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
@@ -472,7 +475,7 @@ def level10():
     keys = pygame.key.get_pressed()
     win.fill ((0,0,0))
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 24)
+    font = pygame.font.Font('munro\munro.ttf', 24)
     text = font.render("I guess we just... Press it?", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
@@ -501,7 +504,7 @@ def level10():
             win.blit(book, (250, 250))
 
         if y > 200 and y < 300 and x > 200 and x < 300:
-            font = pygame.font.Font('freesansbold.ttf', 12)
+            font = pygame.font.Font('munro\munro.ttf', 12)
             text = font.render("press E to take the book", True, white, black)
             textRect = text.get_rect()
             textRect.center = (x ,y - 10)
@@ -526,23 +529,16 @@ def level11():
     global haspowers
     win.fill ((0,0,0))
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 24)
+    font = pygame.font.Font('munro\munro.ttf', 24)
     text = font.render("You got magical powers! ", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
-    if usedpowers:
-        font = pygame.font.Font('freesansbold.ttf', 12)
-        text = font.render("Demons can only be damaged from their underside", True, white, black)
-        textRect = text.get_rect()
-        textRect.center = (x - 10 ,y - 20)
-        win.blit(text, textRect)
-    else:
-        font = pygame.font.Font('freesansbold.ttf', 12)
-        text = font.render("press SPACE to attack!", True, white, black)
-        textRect = text.get_rect()
-        textRect.center = (x - 10 ,y - 20)
-        win.blit(text, textRect)
+    font = pygame.font.Font('munro\munro.ttf', 12)
+    text = font.render("press SPACE to attack!", True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (x - 10 ,y - 20)
+    win.blit(text, textRect)
     enemy.moveenemy()
     enemy.drawenemy()
 
@@ -561,7 +557,7 @@ def level12():
     global haspowers
     win.fill ((0,0,0))
     win.fill ((0,0,0))
-    font = pygame.font.Font('freesansbold.ttf', 16)
+    font = pygame.font.Font('munro\munro.ttf', 16)
     text = font.render("I think you're ready. Press the button to enter The Game", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
