@@ -285,7 +285,7 @@ def level2():
     if showwhite:
         text = font.render("Um. Okay...", True, white)
     else:
-        text = font.render("That's new", True, white, black)
+        text = font.render("That's new", True, white)
 
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
@@ -352,13 +352,13 @@ def level5():
     if level != 5:
         showwhite = False
     elif level == 5:
-        win.blit(whiteimg, (0, 0))
+        win.blit(whiteimg, (-170, 0))
     if x > 400:
         level = 6
         showwhite = False
         level = 6
     font = pygame.font.Font('munro\munro.ttf', 24)
-    text = font.render("Maybe the other direction...?", True, (50, 50, 50))
+    text = font.render("Maybe the other direction...?", True, white)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
@@ -420,13 +420,13 @@ def level8():
     if level != 8:
         showwhite = False
     elif level == 8:
-        win.blit(whiteimg, (0, 0))
+        win.blit(whiteimg, (-170, 0))
     if y < 100:
         level = 9
         showwhite = False
         level = 9
     font = pygame.font.Font('munro\munro.ttf', 24)
-    text = font.render("Try up?", True, (50, 50, 50))
+    text = font.render("Try up?", True, white)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
@@ -446,7 +446,7 @@ def level9():
     win.fill ((0,0,0))
     endlevelbuttondown = False
     font = pygame.font.Font('munro\munro.ttf', 24)
-    text = font.render("Ugh. How long is this going to take?", True, white, black)
+    text = font.render("Ugh. How long is this going to take?", True, white)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
@@ -476,7 +476,7 @@ def level10():
     win.fill ((0,0,0))
     win.fill ((0,0,0))
     font = pygame.font.Font('munro\munro.ttf', 24)
-    text = font.render("I guess we just... Press it?", True, white, black)
+    text = font.render("I guess we just... Press it?", True, white)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
@@ -530,7 +530,7 @@ def level11():
     win.fill ((0,0,0))
     win.fill ((0,0,0))
     font = pygame.font.Font('munro\munro.ttf', 24)
-    text = font.render("You got magical powers! ", True, white, black)
+    text = font.render("You got magical powers! ", True, white)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
@@ -558,7 +558,7 @@ def level12():
     win.fill ((0,0,0))
     win.fill ((0,0,0))
     font = pygame.font.Font('munro\munro.ttf', 16)
-    text = font.render("I think you're ready. Press the button to enter The Game", True, white, black)
+    text = font.render("I think you're ready. Press the button to enter The Game", True, white)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
     win.blit(text, textRect)
