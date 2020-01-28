@@ -1,12 +1,26 @@
 import pygame
 import time
 import random
+from gamefiles import Game
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init() #initialising pygame
 
 win = pygame.display.set_mode((500, 500))
 
 pygame.display.set_caption("JustAnotherAdventureGame")
+
+# checking if tutorial has been played
+t = open('tutorial.txt')
+if t == 'yes':
+    tutorial = False
+else:
+    tutorial = True
+print(t.read())
+print(tutorial)
+
+
+
+
 
 #loading spritesheets
     #player
@@ -62,10 +76,11 @@ left = False
 stop = True
 right = 0
 white = (255, 255, 255)
+hp = 18
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 1
+level = 13
 enemyhealth = 15
 eVel = 2
 endlevelbuttondown = False
@@ -559,8 +574,7 @@ def level12():
             endlevelbuttondown = True
             level = 13
 
-def level13():
-    win.blit(bg, (0, 0))
+
 
 
 def redrawgamewindow1():
@@ -579,6 +593,7 @@ def redrawgamewindow1():
     global first
     global usedpowers
     global haspowers
+    global hp
     print(x, y)
     win.fill ((0,0,0))
     if level == 1:
@@ -611,8 +626,10 @@ def redrawgamewindow1():
     elif level == 12:
         level12()
     elif level == 13:
-        level13()
-
+        t = open('tutorial.txt', 'w')
+        tutorial = False
+        win.blit(bg, (0, 0))
+        Game.main(hp)
 
 #
 
@@ -700,6 +717,7 @@ def redrawgamewindow1():
 bullets = []
 run = True
 frame = 0
+
 while run:
     clock.tick(27)
 
@@ -712,7 +730,8 @@ while run:
 
 
     keys = pygame.key.get_pressed()
-
+    if keys[pygame.K_ESCAPE]:
+        hp -= 1
 
     if keys[pygame.K_LEFT] and x > vel:
         x -= vel
@@ -728,8 +747,11 @@ while run:
         y += vel
 
 
-
-    redrawgamewindow1()
-
+    if tutorial:
+        redrawgamewindow1()
+    else:
+        Game.Main(hp)
+        if Pause:
+            y += vel
 
 pygame.quit()
