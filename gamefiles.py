@@ -34,20 +34,26 @@ hp18 = pygame.image.load('hp-18.png')
 button1 = pygame.image.load('button1.png')
 button2 = pygame.image.load('button2.png')
 
+rb1 = pygame.image.load('endlevelbutton1.png')
+
 escup = pygame.image.load('esc-up.png')
 escdown = pygame.image.load('esc-down.png')
 
 #weapon images
     #legendaries
-L1 = pygame.image.load('legendaries\1.png')
-L2 = pygame.image.load('legendaries\2.png')
+L1 = pygame.image.load('legendaries\l1.png')
+L2 = pygame.image.load('legendaries\l2.png')
     #common
-C1 = pygame.image.load('common\1.png')
+C1 = pygame.image.load('common\c1.png')
 
 menu = True
 Pause = False
 esc = False
 playerHP = 0
+folder = 'common'
+type = 'c'
+num = '1'
+weapon = False
 
 win = pygame.display.set_mode((500, 500))
 
@@ -78,7 +84,7 @@ class Game:
                     pygame.mixer.music.play(0)
                     menu = False
 
-    def pause():
+    def pause(x, y):
         global Pause
         global esc
         keys = pygame.key.get_pressed()
@@ -98,19 +104,58 @@ class Game:
                 esc = False
                 print(Pause)
         if Pause:
-            Game.pause_menu()
+            Game.pause_menu(x, y)
         elif menu == False:
             win.blit(escup, (25, 25))
 
-    def pause_menu():
+    def weapon(folder, type, num, x, y):
+        weapon = pygame.image.load(folder + "\\" + type + num + '.png')
+        win.blit(weapon, (x, y))
+
+    def pause_menu(x, y):
         global Pause
         global menu
+        global folder
+        global type
+        global num
+        global weapon
         win.blit(escdown, (25, 25))
         font = pygame.font.Font('munro\munro.ttf', 40)
         text = font.render("PAUSED", True, (20, 20, 20))
         textRect = text.get_rect()
         textRect.center = (260, 90)
         win.blit(text, textRect)
+        font = pygame.font.Font('munro\munro.ttf', 16)
+        text = font.render("Weapon", True, (20, 20, 20))
+        textRect = text.get_rect()
+        textRect.center = (100, 230)
+        win.blit(text, textRect)
+        Game.weapon(folder,type, num, ((100 + 31 / 2) - 60), 105)
+        win.blit(rb1, (((100 + 31 / 2) + 20), 155))
+        keys = pygame.key.get_pressed()
+        if y > 140 and y < 200 and x < 185 and x > 140:
+            #checking right button
+            if keys[pygame.K_e]:
+                # test / idea code. will be changed later on
+                weapon = True
+                time.sleep(0.01)
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYUP and weapon == True:
+                    pygame.mixer.music.load('button_sound.mp3')
+                    pygame.mixer.music.play(0)
+                    if type == 'c' and folder == 'common' and num == '1':
+                        type = 'l'
+                        folder = 'legendaries'
+                        num = '1'
+                        weapon = False
+                    else:
+                        type = 'c'
+                        folder = 'common'
+                        num = '1'
+                        weapon = False
+
+
 
 
     def hp():
@@ -163,5 +208,5 @@ class Game:
     def main(x, y):
         Game.background()
         Game.menu(x, y)
-        Game.pause()
+        Game.pause(x, y)
         Game.hp()
