@@ -80,7 +80,7 @@ hp = 18
 black = (0, 0, 0)
 showbutton = False
 button1edown = False
-level = 1
+level = 13
 enemyhealth = 15
 eVel = 2
 endlevelbuttondown = False
@@ -189,6 +189,7 @@ def endofgame():
     text = font.render("Thanks for playing! We're working on more levels at this very moment!", True, white, black)
     textRect = text.get_rect()
     textRect.center = (500 // 2, 75)
+    win.blit(text, textRect)
 
 
 
@@ -625,7 +626,7 @@ def redrawgamewindow1():
         t = open('tutorial.txt', 'w')
         tutorial = False
         win.blit(bg, (0, 0))
-        Game.main(hp)
+        Game.main(x, y)
 
 #
 
@@ -746,7 +747,7 @@ while run:
     if tutorial:
         redrawgamewindow1()
     else:
-        Game.Main(hp)
+        Game.Main(x, y)
         if Pause:
             y += vel
 
