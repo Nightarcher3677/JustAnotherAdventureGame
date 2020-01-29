@@ -46,6 +46,15 @@ L2 = pygame.image.load('legendaries\l2.png')
     #common
 C1 = pygame.image.load('common\c1.png')
 
+#loading save info
+su = 'save-txts\\sword-using.txt'
+suwrite = open(su)
+s1 = open('save-txts\\sword1.txt')
+s2 = open('save-txts\\sword2.txt')
+s3 = open('save-txts\\sword3.txt')
+sn = open('save-txts\\sword-num.txt')
+
+#variables
 menu = True
 Pause = False
 esc = False
@@ -112,13 +121,34 @@ class Game:
         weapon = pygame.image.load(folder + "\\" + type + num + '.png')
         win.blit(weapon, (x, y))
 
+    def weaponpicker():
+        global suwrite
+        l = 'legendaries'
+        c = 'common'
+        with open("save-txts\\Sword-using.txt") as f:
+            data = f.read()
+            print(data)
+            print("f is closed here")
+        if data == 'corruptedbashblade':
+            Game.weapon(l,'l', '1', ((100 + 31 / 2) - 60), 105)
+        elif data == 'paladinshammer':
+            Game.weapon(l,'l', '2', ((100 + 31 / 2) - 60), 105)
+        elif data == 'startersword':
+            Game.weapon(c,'c', '1', ((100 + 31 / 2) - 60), 105)
+
     def pause_menu(x, y):
+        global sn
+        global su
+        global s1
+        global s2
+        global s3
         global Pause
         global menu
         global folder
         global type
         global num
         global weapon
+        global suwrite
         win.blit(escdown, (25, 25))
         font = pygame.font.Font('munro\munro.ttf', 40)
         text = font.render("PAUSED", True, (20, 20, 20))
@@ -130,7 +160,7 @@ class Game:
         textRect = text.get_rect()
         textRect.center = (100, 230)
         win.blit(text, textRect)
-        Game.weapon(folder,type, num, ((100 + 31 / 2) - 60), 105)
+        Game.weaponpicker()
         win.blit(rb1, (((100 + 31 / 2) + 20), 155))
         keys = pygame.key.get_pressed()
         if y > 140 and y < 200 and x < 185 and x > 140:
@@ -144,16 +174,22 @@ class Game:
                 if event.type == pygame.KEYUP and weapon == True:
                     pygame.mixer.music.load('button_sound.mp3')
                     pygame.mixer.music.play(0)
-                    if type == 'c' and folder == 'common' and num == '1':
-                        type = 'l'
-                        folder = 'legendaries'
-                        num = '1'
-                        weapon = False
-                    else:
-                        type = 'c'
-                        folder = 'common'
-                        num = '1'
-                        weapon = False
+                    suwrite = open(su, 'w')
+                    snuh = sn.read()
+                    if snuh == '1':
+                        suwrite.write(s1.read())
+                        print(suwrite)
+                        print(s1)
+                    elif snuh == '2':
+                        suwrite.write(s2.read())
+                        print(suwrite)
+                        print(s2)
+                    elif snuh == '3':
+                        suwrite.write(s3.read())
+                        print(suwrite)
+                        print(s3)
+
+
 
 
 
