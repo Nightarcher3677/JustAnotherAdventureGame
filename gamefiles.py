@@ -175,17 +175,23 @@ class Game:
                     pygame.mixer.music.load('button_sound.mp3')
                     pygame.mixer.music.play(0)
                     suwrite = open(su, 'w')
+                    s1 = open('save-txts\\sword1.txt')
+                    s2 = open('save-txts\\sword2.txt')
+                    s3 = open('save-txts\\sword3.txt')
+                    s1r = s1.read()
+                    s2r = s2.read()
+                    s3r = s3.read()
                     snuh = sn.read()
                     if snuh == '1':
-                        suwrite.write(s1.read())
+                        suwrite.write(s1r)
                         print(suwrite)
                         print(s1)
                     elif snuh == '2':
-                        suwrite.write(s2.read())
+                        suwrite.write(s2r)
                         print(suwrite)
                         print(s2)
                     elif snuh == '3':
-                        suwrite.write(s3.read())
+                        suwrite.write(s3r)
                         print(suwrite)
                         print(s3)
 
